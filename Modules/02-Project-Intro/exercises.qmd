@@ -39,7 +39,7 @@ Open an RStudio project through the file system
 
 <!-- Challenge 2 answer begin -->
 
-![](screenshot.png)
+![](screenshot_module_2.jpg){fig-alt="Screenshot of R studio"}
 
 <!-- Challenge 2 answer end -->
 
