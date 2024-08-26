@@ -26,7 +26,11 @@ c(1, 2, 'f')
 
 <!-- Challenge 1 answer begin -->
 
-Your answer goes here
+`integer vector = c(1, 2, 3)`
+
+`character vector = c('d', 'e', 'f')`
+
+`character vector = c(1, 2, 'f')`
 
 <!-- Challenge 1 answer end -->
 
@@ -36,7 +40,7 @@ Look at the help for the `paste` function. You will need to use it later. What's
 
 <!-- Challenge 2 answer begin -->
 
-Your answer goes here
+The sep argument provides a character string that separates the character terms, while the collapse argument will provide a character string that separates the results when pasted together. Collapse can provide a specified value to separate the results into a single character string
 
 <!-- Challenge 2 answer end -->
 
@@ -52,6 +56,8 @@ Use `??"read table"` to look up functions related to reading in tabular data.
 
 <!-- Challenge 3 answer begin -->
 
-Your answer goes here
+We could use `read.delim()`
+
+We could also provide different arguments `sep = "\t", dec = "."` to the `read.csv()`
 
 <!-- Challenge 3 answer end -->
