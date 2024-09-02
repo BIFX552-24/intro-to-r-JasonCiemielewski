@@ -64,7 +64,13 @@ age <- age - 20
 
 `age = 122  #age == 122 TRUE`
 
-`mass = 109.25  #mass == 109.25 FALSE ? why?`
+`mass = 109.25 #mass == 109.25 FALSE ? why?`
+
+`#### near() from dplyr is better instead of comparisson operator == involving computer finite precision floating point arithmetic`
+
+`###### source: "R for Data Science", Wickham and Grolemund, 2017. page 47`
+
+`near(mass, 109.25)  TRUE`
 
 `age = 102  #age == 102 TRUE`
 
