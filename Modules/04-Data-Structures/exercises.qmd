@@ -74,7 +74,7 @@ What is the data type of the names of `mean_male_height`? You can find out using
 
 ```{r}
 mean_male_height <- c(age20_39 = 176.1, age40_59 = 175.8, age60_plus = 173.4)
-str(mean_male_height) #the names are a chr data type
+str(mean_male_height) #the names are a chr data types
 ```
 
 `the names of mean_male_height are chr data type`
@@ -116,41 +116,43 @@ There are several subtly different ways to call variables, observations and elem
 cats[1]
 ```
 
-Explain output here. cats\[1\] subsets and returns the first column of observations (coat)
+cats\[1\] subsets the first column/vector (coat) in the list cats and returns this subset as a list/dataframe.
 
 ```{r}
 cats[[1]]
 ```
 
-Explain output here.
+cats\[\[1\]\] extracts all the elements (rows/observations) of the first column/vector (variable "coat") in the list cats. The returned output is a character vector of the elements with their names attribute dropped.
 
 ```{r}
 cats$coat
 ```
 
-Explain output here.
+cats\$coat extracts the elements of the vector with the names attribute coat and returns the elements without their names attribute as a character vector.
 
 ```{r}
 cats["coat"]
 ```
 
-Explain output here.
+cats\["coat"\] subsets the vector of elements with the names attribute "coat" and returns the subset as a list that retains the names attribute for the elements
 
 ```{r}
 cats[1, 1]
 ```
 
-Explain output here.
+cats\[1, 1\] extracts the first row (observation) of the first column (variable) and returns the element without their names attribute as a character vector.
 
 ```{r}
 cats[, 1]
 ```
 
-Explain output here.
+cats\[, 1\] extracts all row elements of the first column and returns the elements without name attributes, which produces a character vector instead of a list.
 
 ```{r}
 cats[1, ]
 ```
+
+cats\[1, \] extracts the first element (observation) of every column/variable vector and returns the element(s) as a list that retains the names attribute
 
 <!-- Challenge 5 answer end -->
 
@@ -166,7 +168,9 @@ what do you think will be the result of `length(matrix_example)`? Try it. Were y
 
 <!-- Challenge 6 answer begin -->
 
-Explain here.
+I think the length will be 18.\
+\
+My guess was correct. The function recycled numeric 0 as element for each index of the matrix.
 
 <!-- Challenge 6 answer end -->
 
@@ -179,9 +183,14 @@ Make another matrix, this time containing the numbers 1:50, with 5 columns and 1
 ```{r}
 # using matrix with default `matrix` parameters
 ## your command goes here
+matrix_chal7a <- matrix(1:50, ncol = 5, nrow = 10)
+
+The matrix function filled the matrix by columns as a default behavior (byrow = FALSE is default)
 
 # modify the previous command to fill in the opposite order as above
 ## your command goes here
+matrix_chal7b <- matrix(1:50, ncol = 5, nrow = 10,
+                        byrow = TRUE)
 ```
 
 <!-- Challenge 7 answer end -->
