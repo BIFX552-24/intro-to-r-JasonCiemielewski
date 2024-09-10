@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -92,9 +92,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-
 </header>
-
 
 <p>The exercises in this document follow along closely with <a href="https://swcarpentry.github.io/r-novice-gapminder/04-data-structures-part1.html">Lesson 4</a> of <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>, provided by the <a href="https://software-carpentry.org/">Software Carpentry</a> community under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see <a href="https://carpentries.org/">The Carpentries</a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -115,7 +113,7 @@ Key Points
 </div>
 </div>
 <section id="challenge-1" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4> <img src="score1.png">
+<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4>
 <p>An important part of every data analysis is cleaning the input data. If you know that the input data is all of the same format, (e.g.&nbsp;numbers), your analysis is much easier! Clean the cat data set from the chapter about type coercion.</p>
 <p>Use the starter code provided here and complete the tasks below.</p>
 <!-- Challenge 1 answer begin -->
@@ -169,7 +167,7 @@ Key Points
 <!-- Challenge 1 answer end -->
 </section>
 <section id="challenge-2" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4> <img src="score2.png">
+<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4>
 <p>Make a vector with the numbers 1 through 26 (save this vector to the variable <code>x</code>). Then, multiply the vector by 2.</p>
 <!-- Challenge 2 answer begin -->
 <div class="cell">
@@ -183,7 +181,7 @@ Key Points
 <!-- Challenge 2 answer end -->
 </section>
 <section id="challenge-3" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4> <img src="score3.png">
+<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4>
 <p>What is the data type of the names of <code>mean_male_height</code>? You can find out using the <code>str()</code> or <code>typeof()</code> functions.</p>
 <!-- Challenge 3 answer begin -->
 <div class="cell">
@@ -198,7 +196,7 @@ Key Points
 <!-- Challenge 3 answer end -->
 </section>
 <section id="challenge-4" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-4">Challenge 4</h4> <img src="score4.png">
+<h4 class="anchored" data-anchor-id="challenge-4">Challenge 4</h4>
 <p>Instead of just changing some of the names a vector/list already has, you can also set all names of an object by writing code like (replace ALL CAPS text):</p>
 <pre><code>names( OBJECT ) &lt;-  CHARACTER_VECTOR</code></pre>
 <p>Create a vector that gives the number for each letter in the alphabet! R has a built-in object called <code>LETTERS</code>. It is a 26-character vector, from A to Z.</p>
@@ -220,7 +218,7 @@ Key Points
 <!-- Challenge 4 answer end -->
 </section>
 <section id="challenge-5" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-5">Challenge 5</h4> <img src="score5.png">
+<h4 class="anchored" data-anchor-id="challenge-5">Challenge 5</h4>
 <p>There are several subtly different ways to call variables, observations and elements from <code>data.frames</code>. Try out these examples and explain what is returned by each one. <em>Hint</em>: Use the function <code>typeof()</code> to examine what is returned in each case.</p>
 <!-- Challenge 5 answer begin -->
 <div class="cell">
@@ -284,7 +282,7 @@ Key Points
 <!-- Challenge 5 answer end -->
 </section>
 <section id="challenge-6" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-6">Challenge 6</h4> <img src="score6.png">
+<h4 class="anchored" data-anchor-id="challenge-6">Challenge 6</h4>
 <p>Given <code>matrix_example</code>,</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>matrix_example <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">ncol=</span><span class="dv">6</span>, <span class="at">nrow=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -297,7 +295,7 @@ My guess was correct. The function <code>matrix(0, ncol=6, nrow=3)</code> recycl
 <!-- Challenge 6 answer end -->
 </section>
 <section id="challenge-7" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-7">Challenge 7</h4> <img src="score7.png">
+<h4 class="anchored" data-anchor-id="challenge-7">Challenge 7</h4>
 <p>Make another matrix, this time containing the numbers 1:50, with 5 columns and 10 rows. Did the matrix function fill your matrix by column, or by row, as its default behavior? See if you can figure out how to change this. (hint: read the documentation for matrix!)</p>
 <!-- Challenge 7 answer begin -->
 <div class="cell">
@@ -315,7 +313,7 @@ My guess was correct. The function <code>matrix(0, ncol=6, nrow=3)</code> recycl
 <!-- Challenge 7 answer end -->
 </section>
 <section id="challenge-8" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-8">Challenge 8</h4> <img src="score8.png">
+<h4 class="anchored" data-anchor-id="challenge-8">Challenge 8</h4>
 <p>Create a list of length two containing a character vector for each of the sections in this part of the workshop:</p>
 <ul>
 <li>Data types</li>
@@ -347,7 +345,7 @@ $data_structures
 <!-- Challenge 8 answer end -->
 </section>
 <section id="challenge-9" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-9">Challenge 9</h4> <img src="score9.png">
+<h4 class="anchored" data-anchor-id="challenge-9">Challenge 9</h4>
 <p>Consider the R output of the matrix below:</p>
 <pre><code>     [,1] [,2]
 [1,]    4    1
@@ -456,27 +454,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -486,17 +467,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -508,130 +480,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -675,7 +524,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -701,32 +549,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -787,7 +609,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 
