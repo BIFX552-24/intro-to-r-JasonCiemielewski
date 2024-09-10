@@ -117,12 +117,6 @@ library(gapminder)
 data(gapminder)
 
 # your commands go here
-str(gapminder)
-summary(gapminder)
-head(gapminder)
-tail(gapminder)
-
-
 gapminder[sample(nrow(gapminder), 5), ] #this efficient code came specifically from swcarpentry, the cited source from earlier.
 
 
