@@ -37,16 +37,33 @@ cats$weight <- as.numeric(cats$weight)
 cats$age <- c(2,3,5,1)
 
 # create human_age
-## your code goes here
+human_age <- cats$age * 7
 
 # convert human_age to a factor
-## your code goes here
+human_age <- as.factor(human_age)
 
 # convert human_age back to a numeric vector
-## your code goes here
+human_age <- as.numeric(human_age)
+
+#human_age <- human_age / 7
+
+##  human_age_original <- cats$age * 7
+##  human_age == human_age_original
 ```
 
 Explanation: ...
+
+`human_age <- as.numeric(as.factor(human_age))` does not return the original values for the numeric elements
+
+`human_age <- cats$age * 7` creates a vector equal in length to `cats$age` with each row element from cats\$age multiplied by 7 and used as the row element for human_age vector. The data type remains double. `human_age <- as.factor(human_age)` coerces `human_age` from a vector of double data type to a factor data structure with character data type in levels (and those levels represented with a integar value), with each converted unique character element from cats\$ages becoming an orderless factor, sorted by increasing order of the converted unique character elements. `human_age <- as.numeric(human_age)` coerces the human_age factor data structure into a numeric vector; however, each element in the factor data structure is coerced into the underlaying integer value from the levels assignment and not from the original value prior to character conversion.
+
+The original values of `human_age <- cats$age * 7` are 14, 21, 35, 7.
+
+after coercing into factor, `human_age <- as.factor(human_age)`, human_age is now a factor with 4 levels "7", "14", "21", "35" having the underlaying integer representatives of 1, 2, 3, 4.
+
+The original value, prior to converting to factor, for `human_age[1]` is 14. Coercing human_age to a factor changes human_age\[1\] from a double type 14 to a "14 represented by an underlying integer value 2. This underlying integer value is the value used for coercing the factor into a numeric form. The original value of 14 becomes 2 after as.numeric(as.factor(human_age)) coercion.
+
+\`
 
 <!-- Challenge 1 answer end -->
 
@@ -72,17 +89,19 @@ Then use `rbind` to add an entry for someone you work with. Finally, use `cbind`
 
 ```{r}
 # create people
-people <- ## your code goes here ##
-  
+people <- data.frame(first_name = "jason",
+                     last_name = "ciemielewski",
+                     lucky_number = 13)
+
 # add a team member
-## your code goes here ##
-  
+people <- rbind(people, list("boaty", "mcboatface", 12))
+
 # add coffee break
-## your code goes here ##
-  
+people <- cbind(people, coffee_break = c(TRUE, FALSE))
 people
 ```
 
+\
 <!-- Challenge 2 answer end -->
 
 #### Challenge 3
@@ -98,6 +117,16 @@ library(gapminder)
 data(gapminder)
 
 # your commands go here
+str(gapminder)
+summary(gapminder)
+head(gapminder)
+tail(gapminder)
+
+
+gapminder[sample(nrow(gapminder), 5), ] #this efficient code came specifically from swcarpentry, the cited source from earlier.
+
+
+
 ```
 
 <!-- Challenge 3 answer end -->
@@ -112,6 +141,8 @@ Run the script using the `source` function, using the file path as its argument.
 
 ```{r}
 # load gapminder by sourcing your script here
+source('../05-Exploring-Data-Frames/scripts/load_gapminder_data.r')
+
 ```
 
 <!-- Challenge 4 answer end -->
@@ -127,5 +158,7 @@ str(gapminder)
 <!-- Challenge 5 answer begin -->
 
 Explain the output of `str(gapminder)` here.
+
+`str(gapminder)` shows that gapminder is a tibble (a data frame from tiddyverse) has 1,704 rows of observations (lists of elements) for 6 named variables (column vectors). `str(gapminder)` also shows the names for each column vector, as well as the data type, length, and a few of the first elements in each column.
 
 <!-- Challenge 5 answer end -->

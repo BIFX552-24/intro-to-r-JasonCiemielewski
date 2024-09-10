@@ -37,6 +37,9 @@ Come up with at least 2 different commands that will produce the following outpu
 
 ```{r}
 # your commands go here
+x[2:4]
+x[c("b", "c", "d")]
+x[-c(1,5)]
 ```
 
 <!-- Challenge 1 answer end -->
@@ -57,6 +60,7 @@ Write a subsetting command to return the values in x that are greater than 4 and
 
 ```{r}
 # your command goes here
+x[x>4 & x<7]
 ```
 
 <!-- Challenge 2 answer end -->
@@ -93,8 +97,18 @@ There's a wrong way (using only `==`), which will give you a warning; a clunky w
 
 ```{r}
 # wrong way to subset `countries`
-# clunky way to subset `countries`
-# elegant way to subset `countries`
+countries[countries == seAsia]
+#countries <- unique(as.character(gapminder$country[countries == seAsia]))
+
+# clunky way to subset `countries
+countries[countries == "Myanmar" |
+            countries == "Thailand" |
+            countries == "Cambodia" |
+            countries == "Vietnam" |
+            countries == "Laos"]
+
+# elegant way to subset countries
+countries[countries %in% seAsia]
 ```
 
 <!-- Challenge 3 answer end -->
@@ -120,7 +134,9 @@ D. `m[2,c(4,5)]`
 
 <!-- Challenge 4 answer begin -->
 
-A, B, C, or D?
+D
+
+`m[2, c(4,5)]` will extract values 11 and 14 from matrix m.
 
 <!-- Challenge 4 answer end -->
 
@@ -138,6 +154,10 @@ Using your knowledge of both list and vector subsetting, extract the number 2 fr
 
 ```{r}
 # your answer goes here
+xlist$b[[2]]
+xlist$b[2]
+#str(xlist$b[2])
+#str(xlist$b[[2]])
 ```
 
 <!-- Challenge 5 answer end -->
@@ -155,7 +175,8 @@ Extract the residual degrees of freedom (hint: `attributes()` will help you)
 <!-- Challenge 6 answer begin -->
 
 ```{r}
-# your answer goes here
+#attributes(mod)
+mod$df.residual
 ```
 
 <!-- Challenge 6 answer end -->
@@ -169,31 +190,33 @@ Fix each of the following common data frame subsetting errors:
 -   Extract observations collected for the year 1957
 
 ```{r}
-gapminder[gapminder$year = 1957,]
+gapminder[gapminder$year == 1957,]
 ```
 
 -   Extract all columns except 1 through to 4
 
 ```{r}
-gapminder[,-1:4]
+gapminder[,-c(1:4)]
 ```
 
 -   Extract the rows where the life expectancy is longer the 80 years
 
 ```{r}
-gapminder[gapminder$lifeExp > 80]
+gapminder[gapminder$lifeExp > 80,]
 ```
 
 -   Extract the first row, and the fourth and fifth columns (`continent` and `lifeExp`).
 
 ```{r}
-gapminder[1, 4, 5]
+gapminder[1, 4:5]
+gapminder
+
 ```
 
 -   Advanced: extract rows that contain information for the years 2002 and 2007
 
 ```{r}
-gapminder[gapminder$year == 2002 | 2007,]
+gapminder[gapminder$year == 2002 | gapminder$year == 2007,]
 ```
 
 <!-- Challenge 7 answer end -->
@@ -204,6 +227,10 @@ gapminder[gapminder$year == 2002 | 2007,]
 
 <!-- Challenge 8a answer begin -->
 
+`gapminder[1:20]` attempts to subset the first 20 columns of gapminder; however, gapminder only contains 6 rows and "can not subset past the end".
+
+`gapminder[1:20, ]` attempts to subset the first 20 rows with all their columns.
+
 <!-- Challenge 8a answer end -->
 
 #### Challenge 8b
@@ -213,7 +240,23 @@ gapminder[gapminder$year == 2002 | 2007,]
 <!-- Challenge 8b answer begin -->
 
 ```{r}
-# your code goes here
+# solution 1
+gapminder_small_a <- gapminder[1:9, ]
+gapminder_small_b <- gapminder[19:23, ]
+gapminder_small <- rbind(gapminder_small_a, gapminder_small_b)
+
+#This is more efficient code version of solution above
+#gapminder_small <- rbind(gapminder[1:9, ], 
+#                            gapminder[19:23, ]) 
+
+# solution 2
+gapminder_small <- gapminder[c(1:9, 19:23), ]
+
+
+# solution 3
+gapminder_small <- gapminder[1:23, ]
+gapminder_small <- gapminder_small[-c(10:18), ]
+gapminder_small
 ```
 
 <!-- Challenge 8b answer end -->

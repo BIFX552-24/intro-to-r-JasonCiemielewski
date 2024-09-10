@@ -116,43 +116,43 @@ There are several subtly different ways to call variables, observations and elem
 cats[1]
 ```
 
-cats\[1\] subsets the first column/vector (coat) in the list cats and returns this subset as a list/dataframe.
+`cats[1]` subsets the first column/vector (coat) in the list cats and returns this subset as a list/dataframe.
 
 ```{r}
 cats[[1]]
 ```
 
-cats\[\[1\]\] extracts all the elements (rows/observations) of the first column/vector (variable "coat") in the list cats. The returned output is a character vector of the elements with their names attribute dropped.
+`cats[[1]]` extracts all the elements (rows/observations) of the first column/vector (variable "coat") in the list cats. The returned output is a character vector of the elements with their names attribute dropped.
 
 ```{r}
 cats$coat
 ```
 
-cats\$coat extracts the elements of the vector with the names attribute coat and returns the elements without their names attribute as a character vector.
+`cats$coat` extracts the elements of the vector with the names attribute coat and returns the elements without their names attribute as a character vector.
 
 ```{r}
 cats["coat"]
 ```
 
-cats\["coat"\] subsets the vector of elements with the names attribute "coat" and returns the subset as a list that retains the names attribute for the elements
+`cats["coat"]` subsets the vector of elements with the names attribute "coat" and returns the subset as a list that retains the names attribute for the elements
 
 ```{r}
 cats[1, 1]
 ```
 
-cats\[1, 1\] extracts the first row (observation) of the first column (variable) and returns the element without their names attribute as a character vector.
+`cats[1, 1]` extracts the first row (observation) of the first column (variable) and returns the element without their names attribute as a character vector.
 
 ```{r}
 cats[, 1]
 ```
 
-cats\[, 1\] extracts all row elements of the first column and returns the elements without name attributes, which produces a character vector instead of a list.
+`cats[, 1]` extracts all row elements of the first column/vector and returns the elements without name attributes, which produces a character vector instead of a list.
 
 ```{r}
 cats[1, ]
 ```
 
-cats\[1, \] extracts the first element (observation) of every column/variable vector and returns the element(s) as a list that retains the names attribute
+`cats[1, ]` extracts the first element (observation) of every column/variable vector and returns the element(s) as a list that retains the names attribute
 
 <!-- Challenge 5 answer end -->
 
@@ -170,7 +170,7 @@ what do you think will be the result of `length(matrix_example)`? Try it. Were y
 
 I think the length will be 18.\
 \
-My guess was correct. The function recycled numeric 0 as element for each index of the matrix.
+My guess was correct. The function `matrix(0, ncol=6, nrow=3)` recycled numeric 0 as the element for each index of the matrix.
 
 <!-- Challenge 6 answer end -->
 
@@ -183,13 +183,13 @@ Make another matrix, this time containing the numbers 1:50, with 5 columns and 1
 ```{r}
 # using matrix with default `matrix` parameters
 ## your command goes here
-matrix_chal7a <- matrix(1:50, ncol = 5, nrow = 10)
+mChallenge7 <- matrix(1:50, ncol = 5, nrow = 10)
 
 The matrix function filled the matrix by columns as a default behavior (byrow = FALSE is default)
 
 # modify the previous command to fill in the opposite order as above
 ## your command goes here
-matrix_chal7b <- matrix(1:50, ncol = 5, nrow = 10,
+mChallenge7b <- matrix(1:50, ncol = 5, nrow = 10,
                         byrow = TRUE)
 ```
 
@@ -208,6 +208,18 @@ Populate each character vector with the names of the data types and data structu
 
 ```{r}
 ## you command goes here
+data_types <- c("logical", "integer", "double", "complex", "character")
+data_structures <- c("vector", "data frame", "list", "matrix")
+list_challenge8_names <- list(data_types = data_types, 
+                              data_structures = data_structures)
+list_challenge8_names
+
+## Using list(data_types, data_structures) returns a list of vectors that does not have a names attribute.
+
+#list_challenge8 <- list(data_types, data_structures)
+#list_challenge8
+#attributes(list_challenge8)
+#str(list_challenge8)
 ```
 
 <!-- Challenge 8 answer end -->
@@ -234,6 +246,8 @@ What was the command that generated this output? Examine each command and try to
 
 ```{r}
 # your codmmand goes here
+
+matrix(c(4, 1, 9, 5, 10, 7), ncol = 2, byrow = TRUE)
 ```
 
 <!-- Challenge 9 answer end -->
