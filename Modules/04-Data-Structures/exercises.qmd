@@ -185,7 +185,7 @@ Make another matrix, this time containing the numbers 1:50, with 5 columns and 1
 ## your command goes here
 mChallenge7 <- matrix(1:50, ncol = 5, nrow = 10)
 
-The matrix function filled the matrix by columns as a default behavior (byrow = FALSE is default)
+#The matrix function filled the matrix by columns as a default behavior (byrow = FALSE is default)
 
 # modify the previous command to fill in the opposite order as above
 ## your command goes here
