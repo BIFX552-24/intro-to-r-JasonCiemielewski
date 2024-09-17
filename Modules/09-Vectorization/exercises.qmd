@@ -30,7 +30,8 @@ Make a new column in the `gapminder` data frame that contains population in unit
 <!-- Challenge 1 answer begin -->
 
 ```{r}
-# your code goes here
+gapminder$pop_mil <- gapminder$pop / 1e6
+head(gapminder)
 ```
 
 <!-- Challenge 1 answer end -->
@@ -43,6 +44,8 @@ On a single graph, plot population, in millions, against year, for all countries
 
 ```{r}
 # your code goes here
+ggplot(data = gapminder, mapping = aes(x = year, y = pop_mil)) +
+  geom_point()
 ```
 
 <!-- Challenge 2a answer end -->
@@ -54,7 +57,29 @@ Repeat the exercise, graphing only for China, India, and Indonesia. Again, do no
 <!-- Challenge 2b answer begin -->
 
 ```{r}
-# your code goes here
+# One way to subset and plot the selected countries
+# chinaIndiaIndo <- gapminder[
+#   gapminder$country == "China" | 
+#   gapminder$country == "India" |
+#   gapminder$country == "Indonesia",]
+# ggplot(data = chinaIndiaIndo, mapping = aes(x = year, y = pop_mil)) +
+#   geom_point()
+
+#for statement way to subset and plot the selected countries
+# countries <- c("China", "India", "Indonesia")
+# iCountries <- c()
+# for (i in countries) {
+#   iCountries_tmp <- gapminder[gapminder$country == i, ]
+#   iCountries <- rbind(iCountries, iCountries_tmp)
+# }
+# iCountries
+# ggplot(data = iCountries, mapping = aes(x = year, y = pop_mil)) +
+#   geom_point()
+
+#piping subsetted data directly into ggplot
+gapminder[gapminder$country %in% c('China', 'India', 'Indonesia'), ] %>%
+  ggplot(mapping = aes(x = year, y = pop_mil)) +
+  geom_point()
 ```
 
 <!-- Challenge 2b answer end -->
@@ -79,7 +104,15 @@ Did you get the output you expected? If not and the video didn't clear things up
 
 <!-- Challenge 3 answer begin -->
 
-Your answer goes here.
+`m^-1` raised each element of m to -1
+
+`m * c(1, 0, -1)`
+
+results in the vector being recycled as the i th element in the vector is multiplied by the ith element in the matrix.
+
+`m > c(0, 20)` results in a matrix output of logical values as the i th value of the vector is compared to the i th value of the matrix to determine if the i th value of the vector is greater than the i th value of the matrix.
+
+`m * c(1, 0, -1, 2)` results in the 4 element vector being recycled to multiply the i th element in the vector by the i th element in the matrix.
 
 <!-- Challenge 3 answer end -->
 
@@ -97,6 +130,8 @@ This would be tedious to type out, and impossible for high values of $n$. Use ve
 
 ```{r}
 # your code goes here
+
+1/((1:100)^2)
 ```
 
 <!-- Challenge 4a answer end -->
@@ -109,6 +144,11 @@ What is the sum when $n=10,000$?
 
 ```{r}
 # your code goes here
+sum(1/((1:1e5)^2))
+
+#we can also set n = 1e5
+#n <- 1e5
+#sum(1/(1:n)^2)
 ```
 
 <!-- Challenge 4b answer end -->
