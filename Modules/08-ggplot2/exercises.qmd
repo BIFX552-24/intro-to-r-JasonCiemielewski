@@ -33,7 +33,7 @@ Modify the example so that the figure shows how life expectancy has changed over
 <!-- Challenge 1 answer begin -->
 
 ```{r}
-ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point()
+ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) + geom_point()
 ```
 
 <!-- Challenge 1 answer end -->
@@ -46,6 +46,16 @@ In the previous examples and challenge we've used the `aes` function to tell the
 
 ```{r}
 # you code goes here
+ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp, color = continent)) +
+  geom_point()
+
+#this will also work
+#ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) +
+#  geom_point(mapping = aes(color = continent))
+
+#this will color all points the same
+#ggplot(data = gapminder, mapping = aes(x = year, y = lifeExp)) + 
+#  geom_point(color = "blue")
 ```
 
 <!-- Challenge 2 answer end -->
@@ -55,10 +65,17 @@ In the previous examples and challenge we've used the `aes` function to tell the
 Here is a demonstration of drawing points *on top of* lines.
 
 ```{r}
-ggplot(data = gapminder, mapping = aes(x=year, y=lifeExp, by=country)) +
-  geom_line(mapping = aes(color=continent)) + 
+ggplot(data = gapminder, mapping = aes(x=year, y=lifeExp, by=country, 
+                                       color=continent)) +
+  geom_line() + 
   geom_point() +
   scale_color_manual(values = cbbPalette)
+
+#setting mapping = aes(color=continent) in geom_line() results in the lines changing colors, but the data points remain unchanged
+#ggplot(data = gapminder, mapping = aes(x=year, y=lifeExp, by=country)) +
+#  geom_line(mapping = aes(color=continent)) + 
+#  geom_point() +
+#  scale_color_manual(values = cbbPalette)
 ```
 
 Switch the order of the point and line layers from the previous example. What happened?
@@ -67,6 +84,11 @@ Switch the order of the point and line layers from the previous example. What ha
 
 ```{r}
 # Your code goes here
+ggplot(data = gapminder, mapping = aes(x=year, y=lifeExp, by=country, 
+                                       color=continent)) +
+  geom_point() + 
+  geom_line() +
+  scale_color_manual(values = cbbPalette)
 ```
 
 <!-- Challenge 3 answer end -->
@@ -77,9 +99,16 @@ We can fit a simple relationship to the data by adding another layer, `geom_smoo
 
 ```{r}
 ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) +
-  geom_point(alpha = 0.5) + 
-  scale_x_log10() +
-  geom_smooth(method="lm", size=1.5)
+ geom_point(alpha = 0.2) +
+ scale_x_log10() +
+ geom_smooth(method="lm", size=0.5)
+
+#uses method = "gam" by default due to # of observations in largest group
+#ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) +
+#  geom_point(alpha = 0.2) +
+#  scale_x_log10() +
+#  geom_smooth(formula = y ~ x, size=0.5)
+
 ```
 
 Modify the color and size of the points on the point layer in the previous example.
@@ -90,6 +119,10 @@ Hint: do not use the `aes` function.
 
 ```{r}
 # Your code goes here
+ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp)) +
+  scale_x_log10() +
+  geom_point(color = "blue", size = 2) +
+  geom_smooth(formula = y ~ x, size = 0.5)
 ```
 
 <!-- Challenge 4a answer end -->
@@ -102,6 +135,12 @@ Modify your solution above so that the points are now a different shape and are 
 
 ```{r}
 # Your code goes here
+ggplot(data = gapminder, mapping = aes(x = gdpPercap, y = lifeExp, color = continent)) +
+  scale_x_log10() +
+  geom_point(alpha = 0.5, size = 1, aes(shape = continent)) +
+  geom_smooth(formula = y ~ x, linewidth = 0.5) +
+  scale_color_manual(values = cbpalette)
+  
 ```
 
 <!-- Challenge 4b answer end -->
@@ -115,7 +154,26 @@ Modify your solution above so that the points are now a different shape and are 
 <!-- Challenge 5 answer begin -->
 
 ```{r}
-# your code goes here
+ 
+# ggsave('myfigure1.pdf', fig, width = 7, height = 7, units = 'in', )
+
+fig_1 <- ggplot(data = gapminder, mapping = aes(x = continent, y = lifeExp,
+                                       color = continent))+
+  geom_boxplot() +
+  scale_color_manual(values = cbpalette) +
+  scale_y_continuous(limits = c(20,100)) +
+  labs(
+    x = NULL,
+    y = "Life Expectancy",
+    title = "Life Expectancy of Various Continents",
+    subtitle = "between 1952 and 2007",
+    caption = "Gapminder Dataset",
+    color = "Continent") +
+  facet_wrap(~year) +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+fig_1
+ggsave('myfigure1.pdf', fig_1, width = 7, height = 7, units = 'in', )
 ```
 
 <!-- Challenge 5 answer end -->
