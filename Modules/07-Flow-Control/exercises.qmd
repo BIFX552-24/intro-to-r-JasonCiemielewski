@@ -29,6 +29,13 @@ Use an `if()` statement to print a suitable message reporting whether there are 
 
 ```{r}
 # you code goes here
+row_year <- "2002"
+if(nrow(gapminder[(gapminder$year == row_year), ]) >= 1) {
+  paste("Gapminder has data for the year", row_year)
+} else {
+  paste("Gapminder does not have data for the year", row_year)
+}
+rm(row_year)
 ```
 
 <!-- Challenge 1a answer end -->
@@ -41,6 +48,13 @@ Now do the same for 2012.
 
 ```{r}
 # your code goes here
+row_year <- "2012"
+if(nrow(gapminder[(gapminder$year == row_year), ]) >= 1) {
+  paste("Gapminder has data for the year", row_year)
+} else {
+  paste("Gapminder does not have data for the year", row_year)
+}
+rm(row_year)
 ```
 
 <!-- Challenge 1b answer end -->
@@ -67,13 +81,21 @@ for (i in 1:5) {
   }
 }
 output_vector2 <- as.vector(output_matrix)
+output_vector2
+output_vector
 ```
 
 Compare the objects `output_vector` and `output_vector2`. Are they the same? If not, why not? How would you change the last block of code to make `output_vector2` the same as `output_vector`?
 
 <!-- Challenge 2 answer begin -->
 
-Code and/or text answer goes here.
+`output_vector` and `output_vector2`, I would change the following code:
+
+`output_matrix[i, j] <- temp_output` to
+
+`output_matrix[j, i] <- temp_output`
+
+changing the row and column designation in the output from the matrix coercion
 
 <!-- Challenge 2 answer end -->
 
@@ -84,7 +106,17 @@ Write a script that loops through the `gapminder` data by continent and prints o
 <!-- Challenge 3 answer begin -->
 
 ```{r}
-# your code goes here
+library(dplyr)
+continents <- as.character(unique(gapminder$continent))
+for (i in continents) {
+  iContinent <- filter(gapminder, continent == i) 
+  imeanLifeExp <- mean(iContinent$lifeExp)
+  if(imeanLifeExp >= 50){
+    print(paste(i, "has a mean life expectancy of at least 50 years", "(", imeanLifeExp, ")" )) 
+  } else{
+    print(paste(i, "has a mean life expectancy of less than 50 years", "(", imeanLifeExp, ")" ))
+  }
+}
 ```
 
 <!-- Challenge 3 answer end -->
@@ -96,7 +128,24 @@ Modify the script from Challenge 3 to loop over each country. This time print ou
 <!-- Challenge 4 answer begin -->
 
 ```{r}
-# your code goes here
+library(dplyr)
+
+countries <- as.character(unique(gapminder$country))
+lowLEcutoff <- 50
+highLEcutoff <- 70
+
+for (i in countries) {
+  iCountries <- filter(gapminder, country == i) 
+  imeanLifeExp <- mean(iCountries$lifeExp)
+  if(imeanLifeExp >= highLEcutoff){
+    print(paste(i, "has a mean life expectancy greater than", highLEcutoff,
+                "years"))
+  } else if(imeanLifeExp > lowLEcutoff & imeanLifeExp < highLEcutoff) {
+    print(paste(i, "has a mean life expectancy between", lowLEcutoff,
+                "and", highLEcutoff, "years"))
+  } else print(paste(i, "has a mean life expectancy of less than",
+                     lowLEcutoff, "years"))
+  }
 ```
 
 <!-- Challenge 4 answer end -->
