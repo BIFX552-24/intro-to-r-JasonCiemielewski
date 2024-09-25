@@ -29,7 +29,12 @@ Hint: To convert from Kelvin to Celsius you subtract 273.15
 <!-- Challenge 1 answer begin -->
 
 ```{r}
-# your code goes here
+kelvin_to_celsius <- function(temp) 
+{
+  celsius <- temp - 273.15
+  return(celsius)
+}
+kelvin_to_celsius(273.15)
 ```
 
 <!-- Challenge 1 answer end -->
@@ -56,7 +61,29 @@ Define the function to convert directly from Fahrenheit to Celsius, by reusing y
 <!-- Challenge 2 answer begin -->
 
 ```{r}
-# your code goes here
+# my attempts at roxygen2 documentation are not working yet 
+#library(roxygen2)
+#roxygen2::roxygenise()
+#devtools::install()
+#library(LearningR) #DESCRIPTION file was created, 
+
+#` @title fahr_to_celsius
+#` @description Convert degrees fahrenheit to degrees celsius
+#`
+#` @param temp Numeric, temperature in degrees farenheit
+#` @return Temperature in degrees celsius
+
+fahr_to_celsius <- function(temp)
+{
+  celsius <- fahr_to_kelvin(temp) %>%
+  kelvin_to_celsius()
+  return(celsius)
+
+} 
+fahr_to_celsius(32)
+fahr_to_celsius(212)
+
+
 ```
 
 <!-- Challenge 2 answer end -->
@@ -68,7 +95,19 @@ Use defensive programming to ensure that our `fahr_to_celsius()` function throws
 <!-- Challenge 3 answer begin -->
 
 ```{r}
-# your code goes here
+#` @title fahr_to_celsius
+#` @description Convert degrees fahrenheit to degrees celsius
+#`
+#` @param temp Numeric, temperature in degrees farenheit
+#` @return Temperature in degrees celsius
+fahr_to_celsius <- function(temp)
+{
+  stopifnot(is.numeric(temp))
+  celsius <- fahr_to_kelvin(temp) %>%
+  kelvin_to_celsius()
+  return(celsius)
+}
+fahr_to_celsius("b")
 ```
 
 <!-- Challenge 3 answer end -->
@@ -93,7 +132,14 @@ Write a function called `fence()` that takes two vectors as arguments, called `t
 ```{r}
 # Your code goes here
 # check to make sure your code works:
-fence(text=best_practice, wrapper="***")
+fence <- function(text, wrapper) 
+{
+  text <- c(wrapper, text, wrapper)
+  result <- paste(text, collapse = " ")
+}
+
+(fence(text=best_practice, wrapper="***"))
+
 ```
 
 <!-- Challenge 4 answer end -->

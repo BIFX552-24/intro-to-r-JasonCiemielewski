@@ -16,6 +16,10 @@ The exercises in this document follow along closely with [Lesson 11](https://swc
 -   Use `write.table` to save tabular data.
 :::
 
+module11 \<- system('git rev-parse --show-toplevel', intern = TRUE) %\>%
+
+file.path('Modules', '11-Writing-Data')
+
 ```{r}
 #| include: false
 library(gapminder)
@@ -43,7 +47,12 @@ pdf(file.path(module11, "Life_Exp_vs_time.pdf"), width=12, height=4)
 
 ggplot(gapminder, aes(year, lifeExp, color=country)) +
   geom_line() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") 
+
+ggplot(gapminder, aes(year, lifeExp, color = country)) +
+  geom_line() +
+  theme(legend.position = "none") +
+  facet_grid(~continent)
 # You then have to make sure to turn off the pdf device!
 dev.off()
 ```
@@ -60,6 +69,12 @@ Use this script to write out the new subset to a file in the `cleaned-data/` dir
 
 ```{r}
 # insert code here
+aust_subset <- gapminder[gapminder$country == "Australia", ]
+
+write.table(aust_subset,
+            file = file.path(module11, "cleaned-data", "gapminder-aus.csv"),
+            sep = ",",
+            row.names = FALSE)
 ```
 
 <!-- Challenge 2 answer end -->
