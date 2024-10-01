@@ -32,6 +32,8 @@ Is gapminder a purely long, purely wide, or some intermediate format?
 
 <!-- Challenge 1 answer begin -->
 
+The gapminder dataset is an intermediate form between purely long and purely wide.
+
 <!-- Challenge 1 answer end -->
 
 #### gap_wide vs gap_long vs gapminder
@@ -73,6 +75,11 @@ Using `gap_long`, calculate the mean life expectancy, population, and gdpPercap 
 
 ```{r}
 # insert code here
+(mean_continent_metrics <- gap_long %>%
+  group_by(continent, obstype) %>%
+  summarize(mean_value = mean(obs_values)) %>%
+  ungroup())
+              
 ```
 
 <!-- Challenge 2 answer end -->
@@ -85,6 +92,10 @@ Create a `gap_ludicrously_wide` format data by pivoting over countries, year and
 
 ```{r}
 # insert code here
+gap_long %>%
+  unite(ID_var, obstype, year, country, sep = "_") %>%
+  pivot_wider(names_from = ID_var,
+              values_from = obs_values)
 ```
 
 <!-- Challenge 3 answer end -->

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Exploring Data Frames</title>
+<title>Data frames with tidyr</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Exploring Data Frames</h1>
+<h1 class="title">Data frames with tidyr</h1>
 </div>
 
 
@@ -96,7 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The exercises in this document follow along closely with <a href="https://swcarpentry.github.io/r-novice-gapminder/05-data-structures-part2.html">Lesson 5</a> of <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>, provided by the <a href="https://software-carpentry.org/">Software Carpentry</a> community under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see <a href="https://carpentries.org/">The Carpentries</a>.</p>
+<p>The exercises in this document follow along closely with <a href="https://swcarpentry.github.io/r-novice-gapminder/14-tidyr.html">Lesson 14</a> of <a href="https://swcarpentry.github.io/r-novice-gapminder/">R for Reproducible Scientific Analysis</a>, provided by the <a href="https://software-carpentry.org/">Software Carpentry</a> community under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see <a href="https://carpentries.org/">The Carpentries</a>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -108,150 +108,174 @@ Key Points
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Use <code>cbind()</code> to add a new column to a data frame.</li>
-<li>Use <code>rbind()</code> to add a new row to a data frame.</li>
-<li>Remove rows from a data frame.</li>
-<li>Use <code>na.omit()</code> to remove rows from a data frame with NA values.</li>
-<li>Use <code>levels()</code> and <code>as.character()</code> to explore and manipulate factors.</li>
-<li>Use <code>str()</code>, <code>summary()</code>, <code>nrow()</code>, <code>ncol()</code>, <code>dim()</code>, <code>colnames()</code>, <code>rownames()</code>, <code>head()</code>, and <code>typeof()</code> to understand the structure of a data frame.</li>
-<li>Read in a csv file using <code>read.csv()</code>.</li>
-<li>Understand what <code>length()</code> of a data frame represents.</li>
+<li><p>Use the <code>tidyr</code> package to change the layout of data frames.</p></li>
+<li><p>Use <code>pivot_longer()</code> to go from wide to longer layout.</p></li>
+<li><p>Use <code>pivot_wider()</code> to go from long to wider layout.</p></li>
 </ul>
 </div>
 </div>
 <section id="challenge-1" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4>
-<p>Let’s imagine that 1 cat year is equivalent to 7 human years.</p>
-<ol type="1">
-<li>Create a vector called <code>human_age</code> by multiplying <code>cats$age</code> by 7.</li>
-<li>Convert <code>human_age</code> to a factor.</li>
-<li>Convert <code>human_age</code> back to a numeric vector using the <code>as.numeric()</code> function. Now divide it by 7 to get the original ages back. Explain what happened.</li>
-</ol>
+<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4> <img src="score1.png">
+<p>Is gapminder a purely long, purely wide, or some intermediate format?</p>
 <!-- Challenge 1 answer begin -->
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load cats data (make sure you are in the correct working directory)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cats <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'../04-Data-Structures/data/feline-data_v2.csv'</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>weight[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fl">2.35</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>weight <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cats<span class="sc">$</span>weight)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cats<span class="sc">$</span>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">1</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create human_age</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>human_age <span class="ot">&lt;-</span> cats<span class="sc">$</span>age <span class="sc">*</span> <span class="dv">7</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert human_age to a factor</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>human_age <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(human_age)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># convert human_age back to a numeric vector</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>human_age <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(human_age)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#human_age &lt;- human_age / 7</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  human_age_original &lt;- cats$age * 7</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  human_age == human_age_original</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Explanation: …</p>
-<p><code>human_age &lt;- as.numeric(as.factor(human_age))</code> does not return the original values for the numeric elements</p>
-<p><code>human_age &lt;- cats$age * 7</code> creates a vector equal in length to <code>cats$age</code> with each row element from cats$age multiplied by 7 and used as the row element for human_age vector. The data type remains double. <code>human_age &lt;- as.factor(human_age)</code> coerces <code>human_age</code> from a vector of double data type to a factor data structure with character data type in levels (and those levels represented with a integar value), with each converted unique character element from cats$ages becoming an orderless factor, sorted by increasing order of the converted unique character elements. <code>human_age &lt;- as.numeric(human_age)</code> coerces the human_age factor data structure into a numeric vector; however, each element in the factor data structure is coerced into the underlaying integer value from the levels assignment and not from the original value prior to character conversion.</p>
-<p>The original values of <code>human_age &lt;- cats$age * 7</code> are 14, 21, 35, 7.</p>
-<p>after coercing into factor, <code>human_age &lt;- as.factor(human_age)</code>, human_age is now a factor with 4 levels “7”, “14”, “21”, “35” having the underlaying integer representatives of 1, 2, 3, 4.</p>
-<p>The original value, prior to converting to factor, for <code>human_age[1]</code> is 14. Coercing human_age to a factor changes human_age[1] from a double type 14 to a “14 represented by an underlying integer value 2. This underlying integer value is the value used for coercing the factor into a numeric form. The original value of 14 becomes 2 after as.numeric(as.factor(human_age)) coercion.</p>
-<p>`</p>
+<p>The gapminder dataset is an intermediate form between purely long and purely wide.</p>
 <!-- Challenge 1 answer end -->
 </section>
-<section id="challenge-2" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4>
-<p>You can create a new data frame right from within R with the following syntax:</p>
+<section id="gap_wide-vs-gap_long-vs-gapminder" class="level4">
+<h4 class="anchored" data-anchor-id="gap_wide-vs-gap_long-vs-gapminder">gap_wide vs gap_long vs gapminder</h4>
+<p>The <code>gap_wide</code> data set is formatted such that there is only one row per country.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>),</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.3.3</code></pre>
 </div>
-<p>Make a data frame that holds the following information for yourself:</p>
-<ul>
-<li>first name</li>
-<li>last name</li>
-<li>lucky number</li>
-</ul>
-<p>Then use <code>rbind</code> to add an entry for someone you work with. Finally, use <code>cbind</code> to add a column with each person’s answer to the question, “Is it time for coffee break?”</p>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gap_wide <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'https://swcarpentry.github.io/r-novice-gapminder/data/gapminder_wide.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 142 Columns: 38
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (2): continent, country
+dbl (36): gdpPercap_1952, gdpPercap_1957, gdpPercap_1962, gdpPercap_1967, gd...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gap_wide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 142 × 38
+   continent country gdpPercap_1952 gdpPercap_1957 gdpPercap_1962 gdpPercap_1967
+   &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+ 1 Africa    Algeria          2449.          3014.          2551.          3247.
+ 2 Africa    Angola           3521.          3828.          4269.          5523.
+ 3 Africa    Benin            1063.           960.           949.          1036.
+ 4 Africa    Botswa…           851.           918.           984.          1215.
+ 5 Africa    Burkin…           543.           617.           723.           795.
+ 6 Africa    Burundi           339.           380.           355.           413.
+ 7 Africa    Camero…          1173.          1313.          1400.          1508.
+ 8 Africa    Centra…          1071.          1191.          1193.          1136.
+ 9 Africa    Chad             1179.          1308.          1390.          1197.
+10 Africa    Comoros          1103.          1211.          1407.          1876.
+# ℹ 132 more rows
+# ℹ 32 more variables: gdpPercap_1972 &lt;dbl&gt;, gdpPercap_1977 &lt;dbl&gt;,
+#   gdpPercap_1982 &lt;dbl&gt;, gdpPercap_1987 &lt;dbl&gt;, gdpPercap_1992 &lt;dbl&gt;,
+#   gdpPercap_1997 &lt;dbl&gt;, gdpPercap_2002 &lt;dbl&gt;, gdpPercap_2007 &lt;dbl&gt;,
+#   lifeExp_1952 &lt;dbl&gt;, lifeExp_1957 &lt;dbl&gt;, lifeExp_1962 &lt;dbl&gt;,
+#   lifeExp_1967 &lt;dbl&gt;, lifeExp_1972 &lt;dbl&gt;, lifeExp_1977 &lt;dbl&gt;,
+#   lifeExp_1982 &lt;dbl&gt;, lifeExp_1987 &lt;dbl&gt;, lifeExp_1992 &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
+<p>The <code>gap_long</code> data set is formatted such that there is one row per data point.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gap_long <span class="ot">&lt;-</span> gap_wide <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">'pop'</span>), </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">starts_with</span>(<span class="st">'lifeExp'</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">starts_with</span>(<span class="st">'gdpPercap'</span>)),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"obstype_year"</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"obs_values"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">separate</span>(obstype_year, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">'obstype'</span>, <span class="st">'year'</span>), <span class="at">sep =</span> <span class="st">'_'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>gap_long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,112 × 5
+   continent country obstype year  obs_values
+   &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;
+ 1 Africa    Algeria pop     1952     9279525
+ 2 Africa    Algeria pop     1957    10270856
+ 3 Africa    Algeria pop     1962    11000948
+ 4 Africa    Algeria pop     1967    12760499
+ 5 Africa    Algeria pop     1972    14760787
+ 6 Africa    Algeria pop     1977    17152804
+ 7 Africa    Algeria pop     1982    20033753
+ 8 Africa    Algeria pop     1987    23254956
+ 9 Africa    Algeria pop     1992    26298373
+10 Africa    Algeria pop     1997    29072015
+# ℹ 5,102 more rows</code></pre>
+</div>
+</div>
+<p>Both formats cover the extreme ends of the spectrum of how we could format this in a tidy way. The intermediate format provided by <code>data(gapminder)</code> is probably more useful in most situations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>gapminder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+# ℹ 1,694 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="challenge-2" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4> <img src="score2.png">
+<p>Using <code>gap_long</code>, calculate the mean life expectancy, population, and gdpPercap for each continent. <strong>Hint:</strong> use the <code>group_by()</code> and <code>summarize()</code> functions we learned in the <code>dplyr</code> lesson</p>
 <!-- Challenge 2 answer begin -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create people</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">first_name =</span> <span class="st">"jason"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">last_name =</span> <span class="st">"ciemielewski"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">lucky_number =</span> <span class="dv">13</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add a team member</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">rbind</span>(people, <span class="fu">list</span>(<span class="st">"boaty"</span>, <span class="st">"mcboatface"</span>, <span class="dv">12</span>))</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># add coffee break</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">cbind</span>(people, <span class="at">coffee_break =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>people</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># insert code here</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(mean_continent_metrics <span class="ot">&lt;-</span> gap_long <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(continent, obstype) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_value =</span> <span class="fu">mean</span>(obs_values)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  first_name    last_name lucky_number coffee_break
-1      jason ciemielewski           13         TRUE
-2      boaty   mcboatface           12        FALSE</code></pre>
+<pre><code># A tibble: 15 × 3
+   continent obstype   mean_value
+   &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+ 1 Africa    gdpPercap     2194. 
+ 2 Africa    lifeExp         48.9
+ 3 Africa    pop        9916003. 
+ 4 Americas  gdpPercap     7136. 
+ 5 Americas  lifeExp         64.7
+ 6 Americas  pop       24504795. 
+ 7 Asia      gdpPercap     7902. 
+ 8 Asia      lifeExp         60.1
+ 9 Asia      pop       77038722. 
+10 Europe    gdpPercap    14469. 
+11 Europe    lifeExp         71.9
+12 Europe    pop       17169765. 
+13 Oceania   gdpPercap    18622. 
+14 Oceania   lifeExp         74.3
+15 Oceania   pop        8874672. </code></pre>
 </div>
 </div>
-<p><br>
-<!-- Challenge 2 answer end --></p>
+<!-- Challenge 2 answer end -->
 </section>
 <section id="challenge-3" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4>
-<p>It’s good practice to also check the last few lines of your data and some in the middle. How would you do this?</p>
-<p>Searching for observations specifically in the middle isn’t too hard, but we could ask for a few lines at random. How would you code this?</p>
+<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4> <img src="score3.png">
+<p>Create a <code>gap_ludicrously_wide</code> format data by pivoting over countries, year and the 3 metrics? <strong>Hint</strong> this new data frame should only have 5 rows.</p>
 <!-- Challenge 3 answer begin -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'gapminder' was built under R version 4.3.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gapminder)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># your commands go here</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>gapminder[<span class="fu">sample</span>(<span class="fu">nrow</span>(gapminder), <span class="dv">5</span>), ] <span class="co">#this efficient code came specifically from swcarpentry, the cited source from earlier.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># insert code here</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>gap_long <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(ID_var, obstype, year, country, <span class="at">sep =</span> <span class="st">"_"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> ID_var,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> obs_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 6
-  country         continent  year lifeExp      pop gdpPercap
-  &lt;fct&gt;           &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
-1 Ghana           Africa     1977    51.8 10538093      993.
-2 Norway          Europe     2007    80.2  4627926    49357.
-3 Sri Lanka       Asia       1997    70.5 18698655     2664.
-4 Sudan           Africa     1992    53.6 28227588     1492.
-5 Slovak Republic Europe     1977    70.4  4827803    10923.</code></pre>
+<pre><code># A tibble: 5 × 5,113
+  continent pop_1952_Algeria pop_1957_Algeria pop_1962_Algeria pop_1967_Algeria
+  &lt;chr&gt;                &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+1 Africa             9279525         10270856         11000948         12760499
+2 Americas                NA               NA               NA               NA
+3 Asia                    NA               NA               NA               NA
+4 Europe                  NA               NA               NA               NA
+5 Oceania                 NA               NA               NA               NA
+# ℹ 5,108 more variables: pop_1972_Algeria &lt;dbl&gt;, pop_1977_Algeria &lt;dbl&gt;,
+#   pop_1982_Algeria &lt;dbl&gt;, pop_1987_Algeria &lt;dbl&gt;, pop_1992_Algeria &lt;dbl&gt;,
+#   pop_1997_Algeria &lt;dbl&gt;, pop_2002_Algeria &lt;dbl&gt;, pop_2007_Algeria &lt;dbl&gt;,
+#   lifeExp_1952_Algeria &lt;dbl&gt;, lifeExp_1957_Algeria &lt;dbl&gt;,
+#   lifeExp_1962_Algeria &lt;dbl&gt;, lifeExp_1967_Algeria &lt;dbl&gt;,
+#   lifeExp_1972_Algeria &lt;dbl&gt;, lifeExp_1977_Algeria &lt;dbl&gt;,
+#   lifeExp_1982_Algeria &lt;dbl&gt;, lifeExp_1987_Algeria &lt;dbl&gt;, …</code></pre>
 </div>
 </div>
 <!-- Challenge 3 answer end -->
-</section>
-<section id="challenge-4" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-4">Challenge 4</h4>
-<p>Go to file -&gt; new file -&gt; R script, and write an R script to load in the gapminder dataset. Put it in the <code>scripts/</code> directory and add it to version control.</p>
-<p>Run the script using the <code>source</code> function, using the file path as its argument.</p>
-<!-- Challenge 4 answer begin -->
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load gapminder by sourcing your script here</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">'../05-Exploring-Data-Frames/scripts/load_gapminder_data.r'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<!-- Challenge 4 answer end -->
-</section>
-<section id="challenge-5" class="level4">
-<h4 class="anchored" data-anchor-id="challenge-5">Challenge 5</h4>
-<p>Read the output of <code>str(gapminder)</code> again; this time, use what you’ve learned about factors, lists and vectors, as well as the output of functions like <code>colnames</code> and <code>dim</code> to explain what everything that <code>str</code> prints out for <code>gapminder</code> means.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gapminder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tibble [1,704 × 6] (S3: tbl_df/tbl/data.frame)
- $ country  : Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
- $ year     : int [1:1704] 1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ lifeExp  : num [1:1704] 28.8 30.3 32 34 36.1 ...
- $ pop      : int [1:1704] 8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
- $ gdpPercap: num [1:1704] 779 821 853 836 740 ...</code></pre>
-</div>
-</div>
-<!-- Challenge 5 answer begin -->
-<p>Explain the output of <code>str(gapminder)</code> here.</p>
-<p><code>str(gapminder)</code> shows that gapminder is a tibble (a data frame from tiddyverse) has 1,704 rows of observations (lists of elements) for 6 named variables (column vectors). <code>str(gapminder)</code> also shows the names for each column vector, as well as the data type, length, and a few of the first elements in each column.</p>
-<!-- Challenge 5 answer end -->
 </section>
 
 </main>

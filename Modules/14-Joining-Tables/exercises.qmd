@@ -36,8 +36,13 @@ Using the `full_join` function, join tables `jdf4` and `jdf5`. What has happened
 <!-- Challenge 1 answer begin -->
 
 ```{r}
-# Insert code here
+jdf4_5_full_join <- full_join(jdf4, jdf5)
+# view(jdf4)
+# view(jdf5)
+# view(jdf4_5_full_join)
 ```
+
+`c full_join(jdf4, jdf5)` joins tables jdf4 and jdf5 by column/variable "uniprot". `c colnames(jdf4)` and `c colnames(jdf5)` show "uniprot" as the only shared variable. Observation `c P26039` originally comes from table `c jdf4`, which only has the variables "uniprot", "orgenelle" and "entry". `c P26039` displays `c NA` as the value for the new variables provided by `c jdf5` during the full_join. The same effect is observed for `c P02468` with regards for the new variables provided by table `c jdf4` ("gene.name", "description", and "organism") with `c NA` being used for `c P02468` with the new variables after the join.
 
 <!-- Challenge 1 answer end -->
 
@@ -48,7 +53,7 @@ Join tables `jdf4` and `jdf5`, keeping only observations in `jdf4`.
 <!-- Challenge 2 answer begin -->
 
 ```{r}
-# Insert code here
+(left_join(jdf4, jdf5))
 ```
 
 <!-- Challenge 2 answer end -->
@@ -61,6 +66,7 @@ Join tables `jdf4` and `jdf5`, keeping only observations in `jdf5`.
 
 ```{r}
 # Insert code here
+(right_join(jdf4, jdf5))
 ```
 
 <!-- Challenge 3 answer end -->
@@ -72,7 +78,7 @@ Join tables `jdf4` and `jdf5`, keeping observations observed in both tables.
 <!-- Challenge 4 answer begin -->
 
 ```{r}
-# Insert code here
+(inner_join(jdf4, jdf5))
 ```
 
 <!-- Challenge 4 answer end -->
@@ -89,6 +95,10 @@ interpret the result, where both tables have duplicated keys.
 
 <!-- Challenge 5 answer begin -->
 
-*insert answer here*
+`c inner_join(jdf6, jdf7)` creates a tibble with 4 rows for the same uniprot number. `c Q99PL5` is repeated twice in both tables `c jdf6` and `c jdf7`. `c inner_join()` recognizes the uniprot ID in both tables and attempts to join them based on the matching uniprot IDs; however, `c inner_join` does not handle the isoform matching due to the column names not having the same explicit name.
+
+`c inner_join(jdf6, jdf7, by = c("uniprot" = "uniprot", "isoform" = "isoform_num"))`
+
+will perform an inner join without creating incorrect entries.
 
 <!-- Challenge 5 answer end -->

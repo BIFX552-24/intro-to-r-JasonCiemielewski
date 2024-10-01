@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Learning R</title>
+<title>Joining Tables</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,19 +20,53 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="progress_files/libs/clipboard/clipboard.min.js"></script>
-<script src="progress_files/libs/quarto-html/quarto.js"></script>
-<script src="progress_files/libs/quarto-html/popper.min.js"></script>
-<script src="progress_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="progress_files/libs/quarto-html/anchor.min.js"></script>
-<link href="progress_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="progress_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="progress_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="progress_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="progress_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="exercises_files/libs/clipboard/clipboard.min.js"></script>
+<script src="exercises_files/libs/quarto-html/quarto.js"></script>
+<script src="exercises_files/libs/quarto-html/popper.min.js"></script>
+<script src="exercises_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="exercises_files/libs/quarto-html/anchor.min.js"></script>
+<link href="exercises_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="exercises_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="exercises_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="exercises_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="exercises_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -45,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Learning R</h1>
+<h1 class="title">Joining Tables</h1>
 </div>
 
 
@@ -62,88 +96,142 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- This file is not intended to be edited -->
-<!-- Render this file to see automated progress updates on your exercises -->
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>You’ll want to install the following prior to starting this course:</p>
+<p>The exercises in this document follow along closely with the <a href="https://uclouvain-cbio.github.io/WSBIM1207/sec-join.html">Joining tables</a> chapter of <a href="https://uclouvain-cbio.github.io/WSBIM1207/index.html">Introduction to Bioinformatics</a>, under the creative commons license, <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. For more information see:</p>
+<blockquote class="blockquote">
+<p>Laurent Gatto, Kevin Missault, Manon Martin &amp; Axelle Loriot. (2021, September 24). UCLouvain-CBIO/WSBIM1207: Introduction to bioinformatics (Version v2.0.0). Zenodo. DOI: <a href="https://doi.org/10.5281/zenodo.5532658">10.5281/zenodo.5532658</a>.</p>
+</blockquote>
+<!-- see also https://github.com/UCLouvain-CBIO/WSBIM1207/blob/47465271c0ffc4eac5dd476779a1e5a759a6922e/50-joining-tables.Rmd for the exact version referred to here -->
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li><a href="https://posit.co/download/rstudio-desktop/">R and RStudio</a></li>
+<li>Join tables of data in R</li>
 </ul>
-<p>On a related note, if you are a student (i.e.&nbsp;if you must have a ‘.edu’ email and a student ID card), you should check out the <a href="https://education.github.com/pack">GitHub Student Developer Pack</a>. It comes with all sorts of freebies and discounts for developer tools including things like training, GitHub Pro, JetBrains, Microsoft Azure, Codespaces, and GitKraken.</p>
-</section>
-<section id="your-progress" class="level2">
-<h2 class="anchored" data-anchor-id="your-progress">Your progress</h2>
+</div>
+</div>
+<section id="challenge-1" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-1">Challenge 1</h4> <img src="score1.png">
+<p>Using the <code>full_join</code> function, join tables <code>jdf4</code> and <code>jdf5</code>. What has happened for observations <code>P26039</code> and <code>P02468</code>?</p>
+<!-- Challenge 1 answer begin -->
 <div class="cell">
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 45%">
-<col style="width: 54%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Lesson</th>
-<th style="text-align: center;">Score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/01-RStudio-Intro/exercises.html">01 RStudio Intro</a></td>
-<td style="text-align: center;"><a href="Modules/01-RStudio-Intro/"><img src="Modules/01-RStudio-Intro/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/02-Project-Intro/exercises.html">02 Project Intro</a></td>
-<td style="text-align: center;"><a href="Modules/02-Project-Intro/"><img src="Modules/02-Project-Intro/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/03-Seeking-Help/exercises.html">03 Seeking Help</a></td>
-<td style="text-align: center;"><a href="Modules/03-Seeking-Help/"><img src="Modules/03-Seeking-Help/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/04-Data-Structures/exercises.html">04 Data Structures</a></td>
-<td style="text-align: center;"><a href="Modules/04-Data-Structures/"><img src="Modules/04-Data-Structures/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/05-Exploring-Data-Frames/exercises.html">05 Exploring Data Frames</a></td>
-<td style="text-align: center;"><a href="Modules/05-Exploring-Data-Frames/"><img src="Modules/05-Exploring-Data-Frames/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/06-Subsetting-Data/exercises.html">06 Subsetting Data</a></td>
-<td style="text-align: center;"><a href="Modules/06-Subsetting-Data/"><img src="Modules/06-Subsetting-Data/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/07-Flow-Control/exercises.html">07 Flow Control</a></td>
-<td style="text-align: center;"><a href="Modules/07-Flow-Control/"><img src="Modules/07-Flow-Control/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/08-ggplot2/exercises.html">08 ggplot2</a></td>
-<td style="text-align: center;"><a href="Modules/08-ggplot2/"><img src="Modules/08-ggplot2/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/09-Vectorization/exercises.html">09 Vectorization</a></td>
-<td style="text-align: center;"><a href="Modules/09-Vectorization/"><img src="Modules/09-Vectorization/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/11-Writing-Data/exercises.html">11 Writing Data</a></td>
-<td style="text-align: center;"><a href="Modules/11-Writing-Data/"><img src="Modules/11-Writing-Data/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/12-dplyr/exercises.html">12 dplyr</a></td>
-<td style="text-align: center;"><a href="Modules/12-dplyr/"><img src="Modules/12-dplyr/score0.png"></a></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="Modules/13-tidyr/exercises.html">13 tidyr</a></td>
-<td style="text-align: center;"><a href="Modules/13-tidyr/"><img src="Modules/13-tidyr/score0.png"></a></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="Modules/14-Joining-Tables/exercises.html">14 Joining Tables</a></td>
-<td style="text-align: center;"><a href="Modules/14-Joining-Tables/"><img src="Modules/14-Joining-Tables/score0.png"></a></td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>jdf4_5_full_join <span class="ot">&lt;-</span> <span class="fu">full_join</span>(jdf4, jdf5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(uniprot)`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view(jdf4)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># view(jdf5)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># view(jdf4_5_full_join)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>c full_join(jdf4, jdf5)</code> joins tables jdf4 and jdf5 by column/variable “uniprot”. <code>c colnames(jdf4)</code> and <code>c colnames(jdf5)</code> show “uniprot” as the only shared variable. Observation <code>c P26039</code> originally comes from table <code>c jdf4</code>, which only has the variables “uniprot”, “orgenelle” and “entry”. <code>c P26039</code> displays <code>c NA</code> as the value for the new variables provided by <code>c jdf5</code> during the full_join. The same effect is observed for <code>c P02468</code> with regards for the new variables provided by table <code>c jdf4</code> (“gene.name”, “description”, and “organism”) with <code>c NA</code> being used for <code>c P02468</code> with the new variables after the join.</p>
+<!-- Challenge 1 answer end -->
+</section>
+<section id="challenge-2" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-2">Challenge 2</h4> <img src="score2.png">
+<p>Join tables <code>jdf4</code> and <code>jdf5</code>, keeping only observations in <code>jdf4</code>.</p>
+<!-- Challenge 2 answer begin -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">left_join</span>(jdf4, jdf5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(uniprot)`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 6
+   uniprot  organelle                       entry gene_name description organism
+   &lt;chr&gt;    &lt;chr&gt;                           &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;   
+ 1 P26039   Actin cytoskeleton              TLN1… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 2 Q99PL5   Endoplasmic reticulum/Golgi ap… RRBP… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 3 Q6PB66   Mitochondrion                   LPPR… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 4 P11276   Extracellular matrix            FINC… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 5 Q6PR54   Nucleus - Chromatin             RIF1… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 6 Q05793   Extracellular matrix            PGBM… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 7 P19096   Cytosol                         FAS_… Fasn      Fatty acid… Mmus    
+ 8 Q9JKF1   Plasma membrane                 IQGA… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+ 9 Q9QZQ1-2 Plasma membrane                 AFAD… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    
+10 Q6NS46   Nucleus - Non-chromatin         RRP5… &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;    </code></pre>
 </div>
 </div>
+<!-- Challenge 2 answer end -->
+</section>
+<section id="challenge-3" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-3">Challenge 3</h4> <img src="score3.png">
+<p>Join tables <code>jdf4</code> and <code>jdf5</code>, keeping only observations in <code>jdf5</code>.</p>
+<!-- Challenge 3 answer begin -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert code here</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(<span class="fu">right_join</span>(jdf4, jdf5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(uniprot)`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 6
+  uniprot organelle entry     gene_name description                     organism
+  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;                           &lt;chr&gt;   
+1 P19096  Cytosol   FAS_MOUSE Fasn      Fatty acid synthase             Mmus    
+2 P02468  &lt;NA&gt;      &lt;NA&gt;      Lamc1     Laminin subunit gamma-1         Mmus    
+3 P08113  &lt;NA&gt;      &lt;NA&gt;      Hsp90b1   Endoplasmin                     Mmus    
+4 Q8BI84  &lt;NA&gt;      &lt;NA&gt;      Mia3      Melanoma inhibitory activity p… Mmus    
+5 Q6P5D8  &lt;NA&gt;      &lt;NA&gt;      Smchd1    Structural maintenance of chro… Mmus    </code></pre>
+</div>
+</div>
+<!-- Challenge 3 answer end -->
+</section>
+<section id="challenge-4" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-4">Challenge 4</h4> <img src="score4.png">
+<p>Join tables <code>jdf4</code> and <code>jdf5</code>, keeping observations observed in both tables.</p>
+<!-- Challenge 4 answer begin -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">inner_join</span>(jdf4, jdf5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(uniprot)`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  uniprot organelle entry     gene_name description         organism
+  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;               &lt;chr&gt;   
+1 P19096  Cytosol   FAS_MOUSE Fasn      Fatty acid synthase Mmus    </code></pre>
+</div>
+</div>
+<!-- Challenge 4 answer end -->
+</section>
+<section id="challenge-5" class="level4">
+<h4 class="anchored" data-anchor-id="challenge-5">Challenge 5</h4> <img src="score5.png">
+<p>Given the inner join,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inner_join</span>(jdf6, jdf7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(uniprot)`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in inner_join(jdf6, jdf7): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 2 of `x` matches multiple rows in `y`.
+ℹ Row 1 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 9
+  uniprot organelle     entry isoform gene_name description organism isoform_num
+  &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 Q99PL5  Endoplasmic … RRBP…       1 Rrbp1     Ribosome-b… Mmus               1
+2 Q99PL5  Endoplasmic … RRBP…       1 Rrbp1     Ribosome-b… Mmus               2
+3 Q99PL5  Golgi appara… RRBP…       2 Rrbp1     Ribosome-b… Mmus               1
+4 Q99PL5  Golgi appara… RRBP…       2 Rrbp1     Ribosome-b… Mmus               2
+# ℹ 1 more variable: measure &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>interpret the result, where both tables have duplicated keys.</p>
+<!-- Challenge 5 answer begin -->
+<p><code>c inner_join(jdf6, jdf7)</code> creates a tibble with 4 rows for the same uniprot number. <code>c Q99PL5</code> is repeated twice in both tables <code>c jdf6</code> and <code>c jdf7</code>. <code>c inner_join()</code> recognizes the uniprot ID in both tables and attempts to join them based on the matching uniprot IDs; however, <code>c inner_join</code> does not handle the isoform matching due to the column names not having the same explicit name.</p>
+<p><code>c inner_join(jdf6, jdf7, by = c("uniprot" = "uniprot", "isoform" = "isoform_num"))</code></p>
+<p>will perform an inner join without creating incorrect entries.</p>
+<!-- Challenge 5 answer end -->
 </section>
 
 </main>
